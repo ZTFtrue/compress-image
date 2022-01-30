@@ -13,8 +13,6 @@ cd build&&cmake ../&&cmake --build .&&cd ..&&./build/OpenCV_learn
 
 存储jpg文件更小, 因为jpg算法也做了一次处理, 也导致部分颜色完全不正常.
 
-opencv 直接存储webp会变大
-
 ## 结果
 
 |压缩前|压缩后|
