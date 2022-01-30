@@ -11,6 +11,7 @@ using namespace cv;
 typedef Point3_<uint8_t> Pixel;
 
 typedef Point3_<uint8_t> Pixel5;
+std::vector<int> paramsImage = std::vector<int>();
 
 void foreachTest(Pixel &pixel)
 {
@@ -23,6 +24,8 @@ void foreachTest(Pixel &pixel)
 void compressImage()
 {
 	Mat B = imread("./assets/b.jpg");
+	imwrite("./assets/src.webp", B, paramsImage);
+
 	// B.forEach<Pixel>(
 	// 	[](Pixel &pixel, const int *position) -> void
 	// 	{
@@ -50,7 +53,7 @@ void compressImage()
 	}
 	imshow("B", B);
 	imshow("C", C);
-	imwrite("./assets/test_compress.jpg", C);
+	imwrite("./assets/test_compress.webp", C, paramsImage);
 	waitKey(0);
 	for (int r = 0; r < C.rows; r++)
 	{
@@ -67,7 +70,7 @@ void compressImage()
 }
 void uncompressImage()
 {
-	Mat B = imread("./assets/test_compress.jpg");
+	Mat B = imread("./assets/test_compress.webp");
 	for (int r = 0; r < B.rows; r++)
 	{
 		// Loop over all columns
@@ -85,6 +88,9 @@ void uncompressImage()
 }
 int main(int argc, char **argv)
 {
+	paramsImage.push_back(IMWRITE_WEBP_QUALITY);
+	// >100 no loos
+	paramsImage.push_back(100);
 	compressImage();
 	uncompressImage();
 	return 0;
