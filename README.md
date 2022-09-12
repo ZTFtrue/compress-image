@@ -41,7 +41,7 @@ print(wm_extract)
 `blind_watermark` 特指<https://github.com/guofei9987/blind_watermark>
 
 ```c++
-supperMark(); //阻止AI识别
+supperMark(); //阻止AI识别,也能阻止频域水印（内容变色，不一定需要画线）
 ```
 
 ## 算法
