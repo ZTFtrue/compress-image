@@ -54,7 +54,7 @@ void compressImage()
 	imshow("B", B);
 	imshow("C", C);
 	// imwrite("./assets/test_compress.webp", C, paramsImage);
-	imwrite("./assets/test_compress.png", C,paramsImage);
+	imwrite("./assets/test_compress.jpg", C,paramsImage);
 	waitKey(0);
 	for (int r = 0; r < C.rows; r++)
 	{
@@ -68,6 +68,7 @@ void compressImage()
 	}
 	// https://github.com/guofei9987/blind_watermark
 	// 这个忙水印，a.png 可以看出图片不正常
+	// https://github.com/guofei9987/blind_watermark/issues/57
 	imshow("C 2", C);
 	waitKey(0);
 }
@@ -76,7 +77,7 @@ void compressImage()
  */
 void uncompressImage()
 {
-	Mat B = imread("./assets/test_compress.png");
+	Mat B = imread("./assets/test_compress.jpg");
 	for (int r = 0; r < B.rows; r++)
 	{
 		// Loop over all columns
@@ -90,7 +91,7 @@ void uncompressImage()
 		}
 	}
 	imshow("uncompress", B);
-	imwrite("./assets/test_uncompress.png", B);
+	imwrite("./assets/test_uncompress.jpg", B);
 	waitKey(0);
 }
 /**
@@ -101,8 +102,9 @@ void uncompressImageWaterMaker()
 {
 	Mat B = imread("./assets/test_compress.png");
 	// imshow("Equalized Image", B*5);
-	// 不要乘以10 就ok， 越接近10 ， 提取出水印的概率越大
+	// 不要乘以10 就ok， 越接近10 ， 提取出水印的概率越大。和 v[0] = v[0] * 10; 对应
 	// 这个和 blind_watermark 的算法有关系，这一通操作就是把算法插入的数据破坏掉
+	// 
 	imwrite("./assets/test_uncompress_remove_marker12.png", B*9 );
 	waitKey(0);
 	for (int r = 0; r < B.rows; r++)
