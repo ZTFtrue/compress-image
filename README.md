@@ -31,6 +31,8 @@ wm_extract = bwm1.extract('output/embedded.png', wm_shape=191, mode='str')
 print(wm_extract)
 ```
 
+对于`blind_watermark` 根据原算法(应该)有更好(复杂)的解决算法
+
 ## 算法
 
 删除每一个像素(24位)每个RGB值的最后一位(降低对比度).
