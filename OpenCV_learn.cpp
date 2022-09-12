@@ -54,7 +54,7 @@ void compressImage()
 	imshow("B", B);
 	imshow("C", C);
 	// imwrite("./assets/test_compress.webp", C, paramsImage);
-	imwrite("./assets/test_compress.jpg", C,paramsImage);
+	imwrite("./assets/test_compress.jpg", C, paramsImage);
 	waitKey(0);
 	for (int r = 0; r < C.rows; r++)
 	{
@@ -104,8 +104,8 @@ void uncompressImageWaterMaker()
 	// imshow("Equalized Image", B*5);
 	// 不要乘以10 就ok， 越接近10 ， 提取出水印的概率越大。和 v[0] = v[0] * 10; 对应
 	// 这个和 blind_watermark 的算法有关系，这一通操作就是把算法插入的数据破坏掉
-	// 
-	imwrite("./assets/test_uncompress_remove_marker12.png", B*9 );
+	//
+	imwrite("./assets/test_uncompress_remove_marker12.png", B * 9);
 	waitKey(0);
 	for (int r = 0; r < B.rows; r++)
 	{
@@ -120,18 +120,47 @@ void uncompressImageWaterMaker()
 		}
 	}
 	// 这个没测出什么情况下，可以解水印
-	imwrite("./assets/test_uncompress_remove_marker.png", B*15 );
-	imshow("Equalized Image", B*15);
+	imwrite("./assets/test_uncompress_remove_marker.png", B * 15);
+	imshow("Equalized Image", B * 15);
 	waitKey(0);
 }
+// 阻止ai 识别(太费眼了)
+void supperMark()
+{
+	Mat B = imread("./assets/a.png");
 
+	// U 无符号整数, S  integer type   c
+	Mat C(B.rows, B.cols, CV_8UC3);
+	int m = 10;
+	for (int r = 0; r < B.rows; r++)
+	{
+		// Loop over all columns
+		for (int c = 0; c < B.cols; c++)
+		{
+
+			// if ((c) % m == 0 || (r) % m == 9)
+			if ((c + r) % m <=1)
+			{
+				// 阻止AI 识别和线条(方块)的颜色(噪点)有很大的关系
+				Vec3b &v = B.at<Vec3b>(r, c);
+				// 注释下边任意一个，都能让blind_watermark失效
+				v[0] = pow(v[0] / 255.0, 0.8) * 255.0 * 0.2;
+				v[1] = pow(v[1] / 255.0, 0.8) * 255.0 * 0.2;
+				v[2] = pow(v[2] / 255.0, 0.8) * 255.0 * 0.2;
+			}
+		}
+	}
+	imwrite("./assets/embedded.png", B);
+	waitKey(0);
+}
 int main(int argc, char **argv)
 {
 	paramsImage.push_back(IMWRITE_WEBP_QUALITY);
 	// >100 no loos
 	paramsImage.push_back(80);
-	compressImage();
+	// compressImage();
 	// uncompressImage();
-	uncompressImageWaterMaker();
+	// uncompressImageWaterMaker();
+	supperMark();
 	return 0;
 }

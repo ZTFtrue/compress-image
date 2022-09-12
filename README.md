@@ -37,6 +37,13 @@ print(wm_extract)
 
 <https://github.com/guofei9987/blind_watermark/issues/36>
 <https://github.com/guofei9987/blind_watermark/issues/30>
+、
+`blind_watermark` 特指<https://github.com/guofei9987/blind_watermark>
+
+```c++
+supperMark(); //阻止AI识别
+```
+
 ## 算法
 
 删除每一个像素(24位)每个RGB值的最后一位(降低对比度).
