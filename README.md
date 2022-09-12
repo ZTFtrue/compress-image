@@ -3,9 +3,24 @@
 Run
 
 ```sh
-make build
+mkdir build
 cd build&&cmake ../&&cmake --build .&&cd ..&&./build/OpenCV_learn
 ```
+
+## 新增->破坏盲水印
+
+一般的盲水印就是加个高透明度图片(文字), 这个可以通过调整图片的gamma，RGB颜色值看到。
+
+```c++
+uncompressImage(); // 普通水印
+```
+
+```c++
+// <https://github.com/guofei9987/blind_watermark> 
+uncompressImageWaterMaker()//图片色彩艳丽，破坏就很严重
+```
+
+可能每个图片都需要调整参数。
 
 ## 算法
 
@@ -14,6 +29,8 @@ cd build&&cmake ../&&cmake --build .&&cd ..&&./build/OpenCV_learn
 存储jpg文件更小, 因为jpg算法也做了一次处理, 也导致部分颜色完全不正常.
 
 ## 结果
+
+测试图片(assets/b.jpg)![测试图片](assets/b.jpg)
 
 |压缩前|压缩后|
 |---|---|
@@ -28,3 +45,6 @@ B 原图, C 压缩后, C2 直接内存数据复原, uncompress 存储成 jpg 文
 ## 缺陷
 
 1. 色域会有损失
+
+
+

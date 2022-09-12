@@ -23,7 +23,7 @@ void foreachTest(Pixel &pixel)
 
 void compressImage()
 {
-	Mat B = imread("./assets/b.jpg");
+	Mat B = imread("./assets/a.png");
 	imwrite("./assets/src.webp", B, paramsImage);
 
 	// B.forEach<Pixel>(
@@ -53,7 +53,8 @@ void compressImage()
 	}
 	imshow("B", B);
 	imshow("C", C);
-	imwrite("./assets/test_compress.webp", C, paramsImage);
+	// imwrite("./assets/test_compress.webp", C, paramsImage);
+	imwrite("./assets/test_compress.png", C,paramsImage);
 	waitKey(0);
 	for (int r = 0; r < C.rows; r++)
 	{
@@ -65,12 +66,17 @@ void compressImage()
 			v[2] = v[2] * 10;
 		}
 	}
+	// https://github.com/guofei9987/blind_watermark
+	// 这个忙水印，a.png 可以看出图片不正常
 	imshow("C 2", C);
 	waitKey(0);
 }
+/**
+ * 这里就可以解决一般的盲水印了。
+ */
 void uncompressImage()
 {
-	Mat B = imread("./assets/test_compress.webp");
+	Mat B = imread("./assets/test_compress.png");
 	for (int r = 0; r < B.rows; r++)
 	{
 		// Loop over all columns
@@ -84,14 +90,46 @@ void uncompressImage()
 		}
 	}
 	imshow("uncompress", B);
+	imwrite("./assets/test_uncompress.png", B);
 	waitKey(0);
 }
+/**
+ * 解决这个
+ * https://github.com/guofei9987/blind_watermark
+ */
+void uncompressImageWaterMaker()
+{
+	Mat B = imread("./assets/test_compress.png");
+	// imshow("Equalized Image", B*5);
+	// 不要乘以10 就ok， 越接近10 ， 提取出水印的概率越大
+	// 这个和 blind_watermark 的算法有关系，这一通操作就是把算法插入的数据破坏掉
+	imwrite("./assets/test_uncompress_remove_marker12.png", B*9 );
+	waitKey(0);
+	for (int r = 0; r < B.rows; r++)
+	{
+		// Loop over all columns
+		for (int c = 0; c < B.cols; c++)
+		{
+			// Obtain pixel at (r, c)
+			Vec3b &v = B.at<Vec3b>(r, c);
+			v[0] = pow(v[0] / 255.0, 0.8) * 255.0 * 0.2;
+			v[1] = pow(v[1] / 255.0, 0.8) * 255.0 * 0.2;
+			v[2] = pow(v[2] / 255.0, 0.8) * 255.0 * 0.2;
+		}
+	}
+	// 这个没测出什么情况下，可以解水印
+	imwrite("./assets/test_uncompress_remove_marker.png", B*15 );
+	imshow("Equalized Image", B*15);
+	waitKey(0);
+}
+
 int main(int argc, char **argv)
 {
 	paramsImage.push_back(IMWRITE_WEBP_QUALITY);
 	// >100 no loos
-	paramsImage.push_back(100);
+	paramsImage.push_back(80);
 	compressImage();
-	uncompressImage();
+	// uncompressImage();
+	uncompressImageWaterMaker();
 	return 0;
 }
