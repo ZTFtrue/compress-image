@@ -22,6 +22,15 @@ uncompressImageWaterMaker()//图片色彩艳丽，破坏就很严重
 
 可能每个图片都需要调整参数。
 
+/assets/a,png 就是带有水印的图片。解码代码：
+
+```py
+from blind_watermark import WaterMark
+bwm1 = WaterMark(password_img=1, password_wm=1)
+wm_extract = bwm1.extract('output/embedded.png', wm_shape=191, mode='str')
+print(wm_extract)
+```
+
 ## 算法
 
 删除每一个像素(24位)每个RGB值的最后一位(降低对比度).
